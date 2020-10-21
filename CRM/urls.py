@@ -23,6 +23,10 @@ from django.urls import include, path
 #     path('admin/', admin.site.urls),
 # ]
 
+admin.site.site_header = "Steadfast Admin"
+admin.site.site_title = "Steadfast Admin Portal"
+admin.site.index_title = "Welcome to Steadfast Nutrition Portal"
+
 from order.views import (HomepageView, OrderUpdateView, CreateOrderView, delete_order,
                          OrderListView, done_order_view, auto_create_order_view,
                          ajax_add_product, ajax_modify_order_item, ajax_search_products, ajax_calculate_results_view,
