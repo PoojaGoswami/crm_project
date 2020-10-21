@@ -37,8 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'product'
+    'product',
+    'order',
+    'athlete'
 ]
+
+CURRENCY = 'INR'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
