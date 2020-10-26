@@ -47,8 +47,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', core_views.home, name='home'),
     url(r'^login/$', LoginView.as_view(template_name='user/login.html'), name='login'),
+    # url(r'^login/$', core_views.login, name="login"),
     url(r'^logout/$', core_views.logout, name='logout'),
     url(r'^signup/$', core_views.signup, name='signup'),
+    path('sent/', core_views.activation_sent_view, name="activation_sent"),
+    path('activate/<slug:uidb64>/<slug:token>/', core_views.activate, name='activate'),
 
     # path('', HomepageView.as_view(), name='homepage'),
     # path('order-list/', OrderListView.as_view(), name='order_list'),

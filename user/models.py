@@ -1,30 +1,44 @@
 from django.db import models
 
 # Create your models here.
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser, AbstractBaseUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
+# class User(AbstractUser):
+#     birth_date = models.DateField(max_length=50, null=True, blank=True)
+#     address = models.TextField()
+#     mobile = models.IntegerField(null=True, blank=True)
+#     failed_attempt = models.IntegerField(default=0)
+
+
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    athlete_code = models.CharField(max_length=128, unique=True,)
-    birth_date = models.DateField(max_length=50, blank=True)
-    address = models.TextField(max_length=500, blank=True)
-    mobile = models.IntegerField(null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    athlete_code = models.CharField(max_length=128, unique=True)
+    birth_date = models.DateField(max_length=50, null=True, blank=True)
+    address = models.TextField()
+    mobile = models.CharField(max_length=50, unique=True)
+    email = models.EmailField(max_length=150, null=True, blank=True)
     failed_attempt = models.IntegerField(default=0)
+    # signup_confirmation = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.username
 
 
-# class SignUpForm(UserCreationForm):
-#     email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
-#
-#     class Meta:
-#         model = User
-#         fields = ('username', 'email', 'password1', 'password2', )
+# @receiver(post_save, sender=User)
+# def update_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)
+#     instance.profile.save()
+
 
 @receiver(post_save, sender=User)
-def update_user_profile(sender, instance, created, **kwargs):
+def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
