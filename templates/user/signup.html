@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Welcome to Steadfast</title>
+
+    <!-- favicon -->
+    <link href="" rel=icon>
+
+    <!-- web-fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Hind:300,400,500,600,700" rel="stylesheet">
+
+    <!-- font-awesome -->
+    <link href="{% static "user/css/font-awesome.min.css" %}" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="{% static "user/css/bootstrap.min.css" %}" rel="stylesheet">
+
+    <!-- Style CSS -->
+    <link href="{% static "user/css/style.css" %}" rel="stylesheet">
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar">
+  
+<!-- Page Preloader -->
+<div id="preloader">
+    <div id="status">
+        <div class="status-mes"></div>
+    </div>
+</div>
+
+<div class="columns-block">
+<div class="left-col-block blocks">
+    <header class="header">
+        <div class="content text-center">
+     
+        </div>
+        <div class="profile-img">		</div>
+    </header>
+    <!-- .header-->
+</div>
+
+
+<div class="right-col-block blocks">
+
+<section class="section-contact section-wrapper gray-bg">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="feedback-form">
+                    <h2>SIGN UP ACCOUNT</h2>
+
+                    <form id="contactForm" action="" method="POST">
+                        {% csrf_token %}
+
+                         {% for field in form %}
+                          <div class="form-group">
+                            {{ field.errors }}
+                            {{ field.label_tag }}<br>
+                            {{ field }}
+                            {% if field.help_text %}
+                              <small style="color: #808080">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                              <p style="color: #ff0000">{{ error }}</p>
+                            {% endfor %}
+                          </div>
+                        {% endfor %}
+{#                        <div class="form-group">#}
+{##}
+{#                            <input type="text" name="name" required="" class="form-control" id="InputName"#}
+{#                                   placeholder="Name">#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{##}
+{#                            <input type="text" name="dob" required="" class="form-control" id="InputEmail"#}
+{#                                   placeholder="DOB">#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{##}
+{#                            <input type="text" name="athlete" class="form-control" id="InputSubject"#}
+{#                                   placeholder="Athlete Code">#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{##}
+{#                            <input type="text" name="address" required="" class="form-control" id="InputName"#}
+{#                                   placeholder="Address">#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{##}
+{#                            <input type="tel" name="mobile" required="" class="form-control" id="InputEmail"#}
+{#                                   placeholder="Mobile No.">#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{##}
+{#                            <input type="email" name="email" class="form-control" id="InputSubject"#}
+{#                                   placeholder="Email Id">#}
+{#                        </div>#}
+{#<div class="form-group">#}
+{##}
+{#                            <input type="password" name="subject" class="form-control" id="InputSubject"#}
+{#                                   placeholder="Password">#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{#                            <input type="checkbox" id="signup" name="signup" value="signup">#}
+{#                            <label for="signup" class="keep_label">Keep me signed in</label>#}
+{#                            <label for="signup" class="keep_label1">Already a member?</label>#}
+{#                          </div>#}
+                        <button type="submit" class="btn btn-primary">SIGN UP</button>
+                    </form>
+
+                </div>
+                <!-- .feedback-form -->
+
+
+            </div>
+        </div>
+    </div>
+    <!--.container-fluid-->
+</section>
+<!--.section-contact-->
+
+<footer class="footer">
+    <div class="copyright-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+            </div>
+            <!--.row-->
+        </div>
+        <!-- .container-fluid -->
+    </div>
+    <!-- .copyright-section -->
+</footer>
+<!-- .footer -->
+</div>
+<!-- .right-col-block -->
+</div>
+<!-- .columns-block -->
+</div>
+<!-- #main-wrapper -->
+
+<!-- jquery -->
+<script src="{% static "user/js/jquery-2.1.4.min.js" %}"></script>
+
+<!-- Bootstrap -->
+<script src="{% static "user/js/bootstrap.min.js" %}"></script>
+<script src="{% static "user/js/scripts.js" %}"></script>
+</body>
+</html>

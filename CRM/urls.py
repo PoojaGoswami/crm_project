@@ -15,6 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls import url
+
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LogoutView
+from user import views as core_views
+
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 # urlpatterns = [
 #     path('product/', include('product.urls')),
@@ -35,21 +45,26 @@ from order.views import (HomepageView, OrderUpdateView, CreateOrderView, delete_
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', HomepageView.as_view(), name='homepage'),
-    path('order-list/', OrderListView.as_view(), name='order_list'),
-    path('create/', CreateOrderView.as_view(), name='create-order'),
-    path('create-auto/', auto_create_order_view, name='create_auto'),
-    path('update/<int:pk>/', OrderUpdateView.as_view(), name='update_order'),
-    path('done/<int:pk>/', done_order_view, name='done_order'),
-    path('delete/<int:pk>/', delete_order, name='delete_order'),
-    path('action/<int:pk>/<slug:action>/', order_action_view, name='order_action'),
+    url(r'^$', core_views.home, name='home'),
+    url(r'^login/$', LoginView.as_view(template_name='user/login.html'), name='login'),
+    url(r'^logout/$', core_views.logout, name='logout'),
+    url(r'^signup/$', core_views.signup, name='signup'),
+
+    # path('', HomepageView.as_view(), name='homepage'),
+    # path('order-list/', OrderListView.as_view(), name='order_list'),
+    # path('create/', CreateOrderView.as_view(), name='create-order'),
+    # path('create-auto/', auto_create_order_view, name='create_auto'),
+    # path('update/<int:pk>/', OrderUpdateView.as_view(), name='update_order'),
+    # path('done/<int:pk>/', done_order_view, name='done_order'),
+    # path('delete/<int:pk>/', delete_order, name='delete_order'),
+    # path('action/<int:pk>/<slug:action>/', order_action_view, name='order_action'),
 
 
     #  ajax_calls
-    path('ajax/search-products/<int:pk>/', ajax_search_products, name='ajax-search'),
-    path('ajax/add-product/<int:pk>/<int:dk>/', ajax_add_product, name='ajax_add'),
-    path('ajax/modify-product/<int:pk>/<slug:action>', ajax_modify_order_item, name='ajax_modify'),
-    path('ajax/calculate-results/', ajax_calculate_results_view, name='ajax_calculate_result'),
-    path('ajax/calculate-category-results/', ajax_calculate_category_view, name='ajax_category_result'),
+    # path('ajax/search-products/<int:pk>/', ajax_search_products, name='ajax-search'),
+    # path('ajax/add-product/<int:pk>/<int:dk>/', ajax_add_product, name='ajax_add'),
+    # path('ajax/modify-product/<int:pk>/<slug:action>', ajax_modify_order_item, name='ajax_modify'),
+    # path('ajax/calculate-results/', ajax_calculate_results_view, name='ajax_calculate_result'),
+    # path('ajax/calculate-category-results/', ajax_calculate_category_view, name='ajax_category_result'),
 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
