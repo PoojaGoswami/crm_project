@@ -33,7 +33,7 @@ SECRET_KEY = '=*3vy@jyn1ghw&3)(ox1fq0sskfruj!5vfjmw72%($=^c)zlge'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '18.217.199.106', 'ec2-18-217-199-106.us-east-2.compute.amazonaws.com']
 
 
 # Application definition
@@ -100,7 +100,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dashboard',
-        'USER': 'root',
+        'USER': 'pooja',
         'PASSWORD': 'Pooja@123',
     }
 }
