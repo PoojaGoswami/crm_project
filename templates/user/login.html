@@ -55,36 +55,18 @@
             <div class="col-md-12">
                 <div class="feedback-form">
                     <h2>LOG IN ACCOUNT</h2>
-
                     <form id="contactForm" action="{% url 'login' %}" method="POST">
                          {% csrf_token %}
-
-                        <div class="form-group">
-
-                            <input type="text" name="username" required="" class="form-control" id="id_username"
-                                   placeholder="Username">
-                        </div>
-                        <div class="form-group">
-
-                            <input type="text" name="athlete" class="form-control" id="id_athlete"
-                                   placeholder="Athlete Code">
-                        </div>
-						<div class="form-group">
-
-                            <input type="password" name="password" class="form-control" id="id_password"
-                                   placeholder="Password">
-                        </div>
-                        {% if form.errors %}
-                            <p class=" label label-danger">
-                                Your username and password didn't match.
-                                Please try again.
-                            </p>
-                        {% endif %}
-						<div class="form-group">
-                        <!--<input type="checkbox" id="signup" name="signup" value="signup">
-						<label for="signup" class="keep_label">Keep me signed in</label>-->
-						<a href="{% url 'signup' %}" for="signup" class="keep_label1">New User?</a>
-                        </div>
+                        {% for field in form %}
+                            <div class="form-group">
+                            {{ field.errors }}
+{#                            {{ field.label_tag }}#}
+                            {{ field }}
+                             {% for error in field.errors %}
+                              <p style="color: #ff0000">{{ error }}</p>
+                            {% endfor %}
+                            </div>
+                        {% endfor %}
                         <input type="submit" class="btn btn-primary" value="LOG IN">
                         <input type="hidden" name="next" value="{{ next }}" />
                     </form>

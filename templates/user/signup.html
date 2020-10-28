@@ -60,7 +60,7 @@
                          {% for field in form %}
                           <div class="form-group">
                             {{ field.errors }}
-                            {{ field.label_tag }}<br>
+{#                            {{ field.label_tag }}<br>#}
                             {{ field }}
                             {% if field.help_text %}
                               <small style="color: #808080">{{ field.help_text }}</small>
@@ -105,11 +105,11 @@
 {#                            <input type="password" name="subject" class="form-control" id="InputSubject"#}
 {#                                   placeholder="Password">#}
 {#                        </div>#}
-{#                        <div class="form-group">#}
+                        <div class="form-group">
 {#                            <input type="checkbox" id="signup" name="signup" value="signup">#}
 {#                            <label for="signup" class="keep_label">Keep me signed in</label>#}
-{#                            <label for="signup" class="keep_label1">Already a member?</label>#}
-{#                          </div>#}
+                            <label for="signup" class="keep_label1"><a href="{% url 'login' %}">Already a member?</a></label>
+                          </div>
                         <button type="submit" class="btn btn-primary">SIGN UP</button>
                     </form>
 

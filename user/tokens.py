@@ -1,6 +1,5 @@
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 # from django.utils import six
-from six import text_type
 import six
 
 class AccountActivationTokenGenerator(PasswordResetTokenGenerator):

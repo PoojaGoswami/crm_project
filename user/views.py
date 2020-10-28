@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
-from user.forms import SignUpForm
+from user.forms import SignUpForm, LoginForm
 from django.contrib.auth import logout
 
 from django.contrib.auth.models import User
@@ -20,9 +20,12 @@ from django.utils.encoding import force_text
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
+from .models import Profile
+from django.contrib import messages
 
 
 @login_required
+# @login_required(login_url='/login/')
 def home(request):
     return render(request, 'user/home.html')
 
@@ -60,7 +63,7 @@ def signup(request):
             user.profile.email = form.cleaned_data.get('email')
             user.profile.mobile = form.cleaned_data.get('mobile')
             user.profile.address = form.cleaned_data.get('address')
-            user.is_active = False
+            user.is_active = True
             user.save()
             # username = form.cleaned_data.get('username')
             # password = form.cleaned_data.get('password1')
@@ -88,23 +91,40 @@ def signup(request):
     return render(request, 'user/signup.html', {'form': form})
 
 
-# def login(request):
-#     if request.method == "POST":
-#         form = AuthenticationForm(request=request, data=request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data.get('username')
-#             password = form.cleaned_data.get('password')
-#             user = authenticate(username=username, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 messages.info(request, f"You are now logged in as {username}")
-#                 return redirect('/')
-#             else:
-#                 messages.error(request, "Invalid username or password.")
-#         else:
-#             messages.error(request, "Invalid username or password.")
-#     form = AuthenticationForm()
-#     return render(request=request, template_name="user/login.html", context={"form":form})
+def login_user(request):
+    print("helo")
+    if request.method == "POST":
+        print("hello")
+        # form = AuthenticationForm(request=request, data=request.POST)
+        form = LoginForm(data=request.POST)
+        print('foem', form, form.is_valid())
+        print(form.errors)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            athlete_code = form.cleaned_data.get('athlete_code')
+            print('form', username, password, athlete_code)
+
+            user = authenticate(username=username, password=password)
+            print('user', user)
+            if user is not None:
+                if user.is_active:
+                    athlete_code = Profile.objects.filter(athlete_code=athlete_code)
+                    print('athlete_code', athlete_code)
+                    if athlete_code:
+                        login(request, user)
+                        messages.info(request, f"You are now logged in as {username}")
+                        return redirect('/')
+                    else:
+                        messages.error(request, "Invalid username or password.")
+                        print("Invalid details.")
+            else:
+                messages.error(request, "Invalid user details")
+                print("Invalid user details.")
+    else:
+        form = LoginForm()
+
+    return render(request=request, template_name="user/login.html", context={"form":form})
 
 
 
