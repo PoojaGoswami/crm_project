@@ -21,6 +21,8 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from user import views as core_views
+from product import views as product_views
+from order import views as order_views
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -28,7 +30,7 @@ from django.conf.urls.static import static
 
 # urlpatterns = [
 #     path('product/', include('product.urls')),
-#     path('order/', include('order.urls')),
+#     path('order1/', include('order1.urls')),
 #     path('athlete/', include('athlete.urls')),
 #     path('admin/', admin.site.urls),
 # ]
@@ -37,15 +39,16 @@ admin.site.site_header = "Steadfast Admin"
 admin.site.site_title = "Steadfast Admin Portal"
 admin.site.index_title = "Welcome to Steadfast Nutrition Portal"
 
-from order.views import (HomepageView, OrderUpdateView, CreateOrderView, delete_order,
-                         OrderListView, done_order_view, auto_create_order_view,
-                         ajax_add_product, ajax_modify_order_item, ajax_search_products, ajax_calculate_results_view,
-                         order_action_view, ajax_calculate_category_view
-                         )
+# from order.views import (HomepageView, OrderUpdateView, CreateOrderView, delete_order,
+#                           OrderListView, done_order_view, auto_create_order_view,
+#                           ajax_add_product, ajax_modify_order_item, ajax_search_products, ajax_calculate_results_view,
+#                           order_action_view, ajax_calculate_category_view
+#                           )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^$', core_views.home, name='home'),
+    url(r'^$', order_views.index, name='home'),
+    url(r'^previous_order/$', order_views.previous_order, name="previous_order"),
     # url(r'^login/$', LoginView.as_view(template_name='user/login.html'), name='login'),
     url(r'^login/$', core_views.login_user, name="login"),
     url(r'^logout/$', core_views.logout, name='logout'),
@@ -54,8 +57,8 @@ urlpatterns = [
     path('activate/<slug:uidb64>/<slug:token>/', core_views.activate, name='activate'),
 
     # path('', HomepageView.as_view(), name='homepage'),
-    # path('order-list/', OrderListView.as_view(), name='order_list'),
-    # path('create/', CreateOrderView.as_view(), name='create-order'),
+    # path('order1-list/', OrderListView.as_view(), name='order_list'),
+    # path('create/', CreateOrderView.as_view(), name='create-order1'),
     # path('create-auto/', auto_create_order_view, name='create_auto'),
     # path('update/<int:pk>/', OrderUpdateView.as_view(), name='update_order'),
     # path('done/<int:pk>/', done_order_view, name='done_order'),

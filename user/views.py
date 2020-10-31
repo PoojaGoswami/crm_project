@@ -66,8 +66,8 @@ def signup(request):
             user.is_active = True
             user.save()
             # username = form.cleaned_data.get('username')
-            # password = form.cleaned_data.get('password1')
-            password = user.set_password(user.password)
+            password = form.cleaned_data.get('password1')
+            # password = user.set_password(user.password)
             user = authenticate(username=user.username, password=password)
             login(request, user)
             return redirect('home')
