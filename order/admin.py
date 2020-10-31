@@ -12,4 +12,3 @@ class OrderAdmin(admin.ModelAdmin):
     list_per_page = 50
     fields = ['date', 'title', 'value', 'discount', 'final_value', 'is_paid']
     readonly_fields = ['tag_final_value']
-
