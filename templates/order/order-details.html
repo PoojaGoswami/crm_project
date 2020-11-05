@@ -54,7 +54,7 @@
                         
                         <li class="nav-item dropdown">
 					
-						<a  href="#"><b class="user_name">{{ user.username }}</b></a>
+						<a  href=""><b class="user_name">{{ user.username }}</b></a>
 					
 						<a  href="logout/"><b class="user_logout">Logout</b></a>
 			
@@ -106,21 +106,23 @@
                                     <table class="table user-table no-wrap">
                                         <thead>
                                             <tr>
-                                                <th class="border-top-0">ORDER NO</th>
-                                                <th class="border-top-0">ORDER TITLE</th>
-                                                <!--<th class="border-top-0">Flavours</th>-->
+                                                <th class="border-top-0">Order No.</th>
+                                                <th class="border-top-0">Product Name</th>
+                                                <th class="border-top-0">Flavours</th>
                                                 <th class="border-top-0">MRP</th>
-												 <th class="border-top-0">Date</th>
+                                                <th class="border-top-0">TOTAL MRP</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        {{ orders }}
                                         {% for order in order_data %}
                                             <tr>
-                                                <td><a href="/order_details?order={{ order.uuid }}">{{ order.uuid }}</a> </td>
-                                                <td>{{ order.title }}</td>
-                                                <!--<td>Vanilla</td>-->
-                                                <td>RS. {{ order.final_value }}</td>
-												<td>{{ order.timestamp }}</td>
+                                                <td>{{ order.order_id }} </td>
+                                                <td>{{ order.product.title }}</td>
+                                                <td>{{ order.product.flavour }}</td>
+                                                <td>RS. {{ order.final_price }}</td>
+                                                <td>RS. {{ order.total_price }}</td>
+{#												<td>{{ order.timestamp }}</td>#}
 
                                             </tr>
                                         {% endfor %}
@@ -132,7 +134,7 @@
 							
                         </div>
 						<div class="text-right upgrade-btn">
-                            <a href="previous_order/"
+                            <a href="{% url 'home'  %}"
                                 class="btn btn-success d-none d-md-inline-block text-white" target="_blank">PREVIOUS PAGE</a>
                         </div>
                     </div>
@@ -143,17 +145,7 @@
                         
                     </div>
     </div>
-    <!--<script src="../assets/plugins/jquery/dist/jquery.min.js"></script>-->
-    <!-- Bootstrap tether Core JavaScript -->
-    <!--<script src="../assets/plugins/popper.js/dist/umd/popper.min.js"></script>-->
-    <!--<script src="../assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>-->
-    <!--<script src="js/app-style-switcher.js"></script>-->
-    <!--Wave Effects -->
-    <!--<script src="js/waves.js"></script>-->
-    <!--Menu sidebar -->
-    <!--<script src="js/sidebarmenu.js"></script>-->
-    <!--Custom JavaScript -->
-    <!--<script src="js/custom.js"></script>-->
+
 </body>
 
 </html>

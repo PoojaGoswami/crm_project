@@ -21,11 +21,13 @@ class Category(models.Model):
 class Product(models.Model):
     active = models.BooleanField(default=True)
     title = models.CharField(max_length=150, unique=True)
+    flavour = models.CharField(max_length=150, default=None)
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     value = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
     discount_value = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
     final_value = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
     qty = models.PositiveIntegerField(default=0)
+    # description = models.TextField()
 
     objects = models.Manager()
     broswer = ProductManager()

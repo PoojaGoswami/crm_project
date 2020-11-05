@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -9,7 +10,7 @@
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="">
     <!-- Custom CSS -->
-    <link href="css/style.min.css" rel="stylesheet">
+    <link href="{%  static 'css/style.min.css' %}" rel="stylesheet">
 	<style>
 	input,
 textarea {
@@ -93,7 +94,7 @@ input[type="number"] {
                     <a class="navbar-brand" href="index.html">
                         <!-- Logo icon -->
                         <b class="logo-icon">
-                            <img src="img/logo.jpg" alt="homepage" class="dark-logo" />
+                            <img src="{%  static 'img/logo.jpg' %}" alt="homepage" class="dark-logo" />
 
                         </b>
                     </a>
@@ -103,7 +104,7 @@ input[type="number"] {
                 <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
                     <ul class="navbar-nav d-none d-md-block d-lg-none">
                         <li class="nav-item">
-                            <img src="img/logo.jpg" alt="homepage" class="dark-logo" />
+                            <img src="{%  static 'img/logo.jpg' %}" alt="homepage" class="dark-logo" />
                         </li>
                     </ul>
                     <ul class="navbar-nav mr-auto mt-md-0 ">
@@ -121,11 +122,12 @@ input[type="number"] {
                         
                         <li class="nav-item dropdown">
 					
-						<a  href=""><b class="user_name">Athlete Name</b></a>
+						<a  href=""><b class="user_name">{{ user.username }}</b></a>
 					
-						<a  href=""><b class="user_logout">Logout</b></a>
+						<a  href="logout/"><b class="user_logout">Logout</b></a>
+
 			
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href=""><img src="img/user.png"
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href=""><img src="{%  static 'img/user.png' %}"
                                     alt="user" class="profile-pic mr-2"></a>
 								
                         </li>
