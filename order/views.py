@@ -22,11 +22,8 @@ def order_details(request):
     current_user = request.user
     print('current', current_user)
     order_uuid = request.GET.get('order')
-
-    # order_items = OrderItem.objects.filter(order_id=order_uuid)
     order_items = OrderItem.objects.filter(order_id=order_uuid).select_related('product')
     print(order_items.query)
-    print('ordr data', order_items)
 
     return render(request, 'order/order-details.html', {'order_data': order_items})
 
@@ -41,7 +38,18 @@ def previous_order(request):
 
 @login_required
 def place_order(request):
-    category = Category.objects.all()
-    product = Product.objects.all()
-    print('category', category, product)
-    return render(request, 'order/order-place.html')
+    categories = Category.objects.all()
+    product_template_str = ''
+    for cat in categories:
+        product_template_str += '<th>' + cat.title + '</th>'
+        products = Product.objects.filter(category_id=cat.id)
+        for prod in products:
+            product_template_str += '<tr><td>' + prod.title + '</td>'
+            product_template_str += '<td>' + prod.flavour + '</td>'
+            product_template_str += '<td>' + str(prod.value) + '</td>'
+            product_template_str += '<td><div class="input-group"><input type="button" value="-" class="button-minus" data-field="quantity"><input type="number" step="1" max="" value="1" name="quantity" class="quantity-field"><input type="button" value="+" class="button-plus" data-field="quantity"></div></td>'
+            product_template_str += '</tr>'
+
+    # product = Product.objects.all()
+    print('product_template_str', product_template_str)
+    return render(request, 'order/order-place.html', {'product_template': product_template_str})

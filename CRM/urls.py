@@ -47,10 +47,10 @@ admin.site.index_title = "Welcome to Steadfast Nutrition Portal"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^$', order_views.index, name='home'),
+    url(r'^order/$', order_views.index, name='order'),
     url(r'^previous_order/$', order_views.previous_order, name="previous_order"),
     url(r'^order_details/$', order_views.order_details, name="order_details"),
-    url(r'^place_order/$', order_views.place_order, name="place_order"),
+    url(r'^$', order_views.place_order, name="home"),
     # url(r'^login/$', LoginView.as_view(template_name='user/login.html'), name='login'),
     url(r'^login/$', core_views.login_user, name="login"),
     url(r'^logout/$', core_views.logout, name='logout'),
