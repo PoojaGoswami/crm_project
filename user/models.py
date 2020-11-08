@@ -6,6 +6,14 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
+class Athlete(models.Model):
+    email = models.CharField(max_length=100)
+    athlete_code = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.email
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     athlete_code = models.CharField(max_length=128, unique=True)

@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from .models import Order, OrderItem
+from product.models import Category, Product
 from django.contrib.auth.decorators import login_required
 import json
 
@@ -40,4 +41,7 @@ def previous_order(request):
 
 @login_required
 def place_order(request):
+    category = Category.objects.all()
+    product = Product.objects.all()
+    print('category', category, product)
     return render(request, 'order/order-place.html')

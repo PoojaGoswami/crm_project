@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Profile
+from .models import Profile, Athlete
 
 
 @admin.register(Profile)
@@ -14,3 +14,6 @@ class ProfileAdmin(admin.ModelAdmin):
     fields = ['athlete_code', 'mobile', 'birth_date']
     autocomplete_fields = ['user_id']
     # readonly_fields = ['tag_final_value']
+
+
+admin.site.register(Athlete)

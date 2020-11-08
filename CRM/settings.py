@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'django_tables2',
     'product',
     'order',
-    'athlete',
     'user'
 ]
 
@@ -100,7 +99,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dashboard',
-        'USER': 'pooja',
+        'USER': 'root',
         'PASSWORD': 'Pooja@123',
     }
 }

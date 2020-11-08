@@ -39,6 +39,12 @@ class Product(models.Model):
         self.final_value = self.discount_value if self.discount_value > 0 else self.value
         super().save(*args, **kwargs)
 
+    def num_products(self):
+        return self.all_products().count()
+
+    def all_products(self):
+        return Product.objects.all()
+
     def __str__(self):
         return self.title
 

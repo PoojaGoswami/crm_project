@@ -7,7 +7,7 @@ from .models import Order, OrderItem
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['date', 'user', 'title', 'value', 'discount', 'final_value', 'is_paid']
     list_select_related = ['user']
-    list_filter = ['date', 'title', 'value', 'discount', 'final_value', 'is_paid']
+    list_filter = ['date', 'user', 'title', 'value', 'discount', 'final_value', 'is_paid']
     search_fields = ['title']
     list_per_page = 50
     fields = ['date', 'user', 'title', 'value', 'discount', 'final_value', 'is_paid']
