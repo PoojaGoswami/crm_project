@@ -111,7 +111,7 @@ input[type="number"] {
 
                         <li class="nav-item hidden-sm-down">
                             <form class="app-search pl-3">
-                                <input type="text" class="form-control" placeholder="Search"> <a
+                                <input type="text" id="prodInput" onkeyup="SearchFunction()" class="form-control" placeholder="Search"> <a
                                     class="srh-btn"><i class="ti-search"></i></a>
                             </form>
                         </li>
@@ -159,7 +159,7 @@ input[type="number"] {
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table user-table no-wrap">
+                                    <table class="table user-table no-wrap" id="prodTable">
                                         <thead>
                                             <tr>
                                                
@@ -237,6 +237,29 @@ $('.input-group').on('click', '.button-minus', function(e) {
 <!-- Bootstrap -->
 <script src="{%  static 'js/bootstrap.min.js' %}"></script>
 <script src="{%  static 'js/scripts.js' %}"></script>
+<script type="text/javascript">
+    function SearchFunction(){
+        // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("prodInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("prodTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+    }
+</script>
 </body>
 
 </html>
