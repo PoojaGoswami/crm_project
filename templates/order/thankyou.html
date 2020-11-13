@@ -158,39 +158,13 @@ input[type="number"] {
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table user-table no-wrap" id="prodTable">
-                                        <thead>
-                                            <tr>
-                                               
-                                                <th class="border-top-0">Product Name</th>
-                                                <th class="border-top-0">Flavours</th>
-                                                <th class="border-top-0">MRP</th>
-												<th class="border-top-0">Total No.</th>
-											</tr>
-                                        </thead>
-                                        <form name="update_cart" method="post">
-                                        {% csrf_token %}
-                                        {% autoescape off %}
-
-                                            {{ product_template }}
-
-                                        {% endautoescape %}
-
-                                        </form>
-
-                                        </tbody>
-                                    </table>
-									
-                                </div>
+                                Thankyou, Your order has been successfully placed
                             </div>
 							
                         </div>
 						<div class="text-right upgrade-btn">
 						<a href="{% url 'order' %}" style="float:left; background-color:#e2e2e2; border-color:#e2e2e2; color:#212529 !important;"
                                 class="btn btn-success d-none d-md-inline-block text-white">PREVIOUS ORDER</a>
-                            <a href="{% url 'place_final_order'git a %}"
-                                class="btn btn-success d-none d-md-inline-block text-white">PLACE ORDER</a>
                         </div>
                     </div>
                 </div>

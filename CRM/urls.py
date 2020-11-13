@@ -51,12 +51,17 @@ urlpatterns = [
     url(r'^previous_order/$', order_views.previous_order, name="previous_order"),
     url(r'^order_details/$', order_views.order_details, name="order_details"),
     url(r'^$', order_views.place_order, name="home"),
+    url(r'^place_final_order/$', order_views.place_final_order, name="place_final_order"),
     # url(r'^login/$', LoginView.as_view(template_name='user/login.html'), name='login'),
     url(r'^login/$', core_views.login_user, name="login"),
     url(r'^logout/$', core_views.logout, name='logout'),
     url(r'^signup/$', core_views.signup, name='signup'),
     path('sent/', core_views.activation_sent_view, name="activation_sent"),
     path('activate/<slug:uidb64>/<slug:token>/', core_views.activate, name='activate'),
+
+    # ajax_calls
+    url(r'^ajax/update-cart/$', order_views.update_cart, name='update-cart'),
+
 
     # path('', HomepageView.as_view(), name='homepage'),
     # path('order1-list/', OrderListView.as_view(), name='order_list'),

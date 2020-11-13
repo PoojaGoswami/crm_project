@@ -18,6 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 CURRENCY = 'INR'
+CART_SESSION_ID = 'cart'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_URL = '/login'
 LOGOUT_URL = 'logout'
