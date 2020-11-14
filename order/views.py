@@ -54,7 +54,6 @@ def place_order(request):
             product_template_str += '</tr>'
 
     # product = Product.objects.all()
-    # print('product_template_str', product_template_str)
     return render(request, 'order/order-place.html', {'product_template': product_template_str})
 
 
@@ -66,13 +65,6 @@ def update_cart(request):
     cart = Cart(request)
     product = get_object_or_404(Product, id=prod_id)
     cart.add(product=product, quantity=qty, update_quantity=True)
-
-
-    # cart = Cart(request)
-    # product = get_object_or_404(Product, id=prod_id)
-    # cart.add(product=product, quantity=cd['quantity'], update_quantity=cd['update'])
-    # return redirect('cart:cart_detail')
-
     data = {
         'updated': True
     }
@@ -81,7 +73,21 @@ def update_cart(request):
 
 @login_required
 def place_final_order(request):
-    return render(request, 'order/thankyou.html')
+    cart_session = request.session.get('cart')
+    print('cart session--', cart_session)
+    cart = Cart(request)
+    ordered_items = cart.__iter__()
+    print('ordered', ordered_items)
+    print('len', cart.__len__())
+    print('len', cart.get_total_price())
+
+
+    order = Order()
+    order.title = str(order.uuid) + "_" + request.user.username
+    order.user_id = request.user.id
+    order.value = cart.get_total_price()
+    order.save()
+    return render(request, 'order/thankyou.html', {ordered_items: ordered_items})
 
 
 def cart_remove(request, product_id):
