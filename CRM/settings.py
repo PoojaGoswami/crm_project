@@ -101,7 +101,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dashboard',
-        'USER': 'pooja',
+        'USER': 'root',
         'PASSWORD': 'Pooja@123',
     }
 }

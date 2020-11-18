@@ -8,6 +8,8 @@ import json
 from django.http import JsonResponse
 
 from .cart import Cart
+import datetime
+
 
 @login_required
 def index(request):
@@ -58,7 +60,34 @@ def place_order(request):
 
 
 @login_required
-def update_cart(request):
+def ajax_add_product(request, pk, dk):
+    instance = get_object_or_404(Order, id=pk)
+    product = get_object_or_404(Product, id=dk)
+    order_item, created = OrderItem.objects.get_or_create(order=instance, product=product)
+    if created:
+        order_item.qty = 1
+        order_item.price = product.value
+        order_item.discount_price = product.discount_value
+    else:
+        order_item.qty += 1
+    order_item.save()
+    product.qty -= 1
+    product.save()
+    instance.refresh_from_db()
+    order_items = OrderItemTable(instance.order_items.all())
+    RequestConfig(request).configure(order_items)
+    data = dict()
+    data['result'] = render_to_string(template_name='include/order_container.html',
+                                      request=request,
+                                      context={'instance': instance,
+                                               'order_items': order_items
+                                               }
+                                    )
+    return JsonResponse(data)
+
+
+@login_required
+def ajax_update_cart(request):
     prod_id = request.POST.get('prod_id')
     qty = request.POST.get('qty')
     print('hii', prod_id, qty)
@@ -77,16 +106,36 @@ def place_final_order(request):
     print('cart session--', cart_session)
     cart = Cart(request)
     ordered_items = cart.__iter__()
-    print('ordered', ordered_items)
     print('len', cart.__len__())
-    print('len', cart.get_total_price())
 
+    new_order = Order.objects.create(
+        title='Order 66',
+        date=datetime.datetime.now(),
+        value=98,
+        final_value=cart.get_total_final_price(),
+        discount=cart.get_total_discount(),
+        user_id=request.user.id,
 
-    order = Order()
-    order.title = str(order.uuid) + "_" + request.user.username
-    order.user_id = request.user.id
-    order.value = cart.get_total_price()
-    order.save()
+    )
+    new_order.title = f'Order - {new_order.id}'
+    new_order.save()
+
+    for key in cart_session:
+        product = get_object_or_404(Product, id=key)
+        order_item, created = OrderItem.objects.get_or_create(order_id=new_order.uuid, product_id=key)
+        if created:
+            order_item.qty = cart_session[key]['quantity']
+            order_item.price = cart_session[key]['price']
+            order_item.discount_price = cart_session[key]['discount']
+        else:
+            order_item.qty += 1
+        order_item.save()
+        product.qty -= int(cart_session[key]['quantity'])
+        product.save()
+        new_order.refresh_from_db()
+
+    del request.session['cart']
+
     return render(request, 'order/thankyou.html', {ordered_items: ordered_items})
 
 

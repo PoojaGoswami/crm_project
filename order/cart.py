@@ -23,25 +23,15 @@ class Cart(object):
         product_id = str(product.id)
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0,
-                                     'price': str(product.value)}
+                                     'price': str(product.value),
+                                     'discount': str(product.discount_value),
+                                     'final_price': str(product.final_value)}
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] += quantity
         self.save()
         print('session', self.session)
-
-    # def add(self, product, quantity=1):
-    #     """
-    #     Add a product to the cart or update its quantity.
-    #     """
-    #     product_id = str(product.id)
-    #     if product_id not in self.cart:
-    #         self.cart[product_id] = {'quantity': quantity,
-    #                                  'price': str(product.price)}
-    #     else:
-    #         self.cart[product_id]['quantity'] += quantity
-    #     self.save()
 
     def remove(self, product):
         """
@@ -83,6 +73,12 @@ class Cart(object):
     def get_total_price(self):
         # return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
         return sum(Decimal(item['price']) * int(item['quantity']) for item in self.cart.values())
+
+    def get_total_discount(self):
+        return sum(Decimal(item['discount']) * int(item['quantity']) for item in self.cart.values())
+
+    def get_total_final_price(self):
+        return sum(Decimal(item['final_price']) * int(item['quantity']) for item in self.cart.values())
 
     def clear(self):
         # remove cart from session

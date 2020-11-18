@@ -39,8 +39,9 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         order_items = self.order_items.all()
-        self.value = order_items.aggregate(Sum('total_price'))['total_price__sum'] if order_items.exists() else 0.00
-        self.final_value = Decimal(self.value) - Decimal(self.discount)
+        print('order_items', order_items)
+        # self.value = order_items.aggregate(Sum('total_price'))['total_price__sum'] if order_items.exists() else 0.00
+        # self.final_value = Decimal(self.value) - Decimal(self.discount)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -89,7 +90,7 @@ class OrderItem(models.Model):
         return f'{self.product.title}'
 
     def save(self,  *args, **kwargs):
-        self.final_price = self.discount_price if self.discount_price > 0 else self.price
+        self.final_price = self.discount_price if Decimal(self.discount_price) > 0 else self.price
         self.total_price = Decimal(self.qty) * Decimal(self.final_price)
         super().save(*args, **kwargs)
         self.order.save()

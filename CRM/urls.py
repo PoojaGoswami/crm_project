@@ -60,7 +60,7 @@ urlpatterns = [
     path('activate/<slug:uidb64>/<slug:token>/', core_views.activate, name='activate'),
 
     # ajax_calls
-    url(r'^ajax/update-cart/$', order_views.update_cart, name='update-cart'),
+    url(r'^ajax/update-cart/$', order_views.ajax_update_cart, name='update-cart'),
 
 
     # path('', HomepageView.as_view(), name='homepage'),
