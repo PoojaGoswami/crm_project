@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Profile
+# from django.contrib.admin.widgets import AdminDateWidget
+# from django.forms.fields import DateField
+from .widgets import FengyuanChenDatePickerInput
 
 
 class SignUpForm(UserCreationForm):
@@ -17,6 +19,8 @@ class SignUpForm(UserCreationForm):
 
     # username = forms.CharField(max_length=50, required=False, help_text='Optional.', widget= forms.TextInput(attrs={'placeholder':'Name'}))
     birth_date = forms.CharField(max_length=25, required=False, help_text='', widget=forms.TextInput(attrs={'placeholder':'Date of birth'}))
+    # birth_date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
+    # birth_date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'], widget=FengyuanChenDatePickerInput())
     athlete_code = forms.CharField(max_length=50, required=False, help_text='', widget=forms.TextInput(attrs={'placeholder':'Athlete Code'}))
     address = forms.CharField(max_length=150, required=False, help_text='', widget=forms.TextInput(attrs={'placeholder':'Address'}))
     mobile = forms.CharField(max_length=30, required=False, help_text='', widget=forms.TextInput(attrs={'placeholder':'Mobile No.'}))
@@ -24,7 +28,6 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        # fields = ('username', 'birth_date', 'first_name', 'last_name', 'email', 'password1', 'password2', )
         fields = ('username', 'birth_date', 'athlete_code', 'address', 'mobile', 'email', 'password1', 'password2')
 
 

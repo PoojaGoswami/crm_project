@@ -63,10 +63,21 @@
 {#                            {{ field.label_tag }}#}
                             {{ field }}
                              {% for error in field.errors %}
-                              <p style="color: #ff0000">{{ error }}</p>
+                              <p style="color: #ff0000">{{ error|escape }}</p>
                             {% endfor %}
                             </div>
                         {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <p style="color: #ff0000">{{ error|escape }}</p>
+                        {% endfor %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p style="color: #ff0000">{{ message }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="form-group">
+                            <label for="signup" class="keep_label1"><a href="{% url 'signup' %}">New User?</a></label>
+                        </div>
                         <input type="submit" class="btn btn-primary" value="LOG IN">
                         <input type="hidden" name="next" value="{{ next }}" />
                     </form>

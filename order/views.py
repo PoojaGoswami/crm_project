@@ -52,7 +52,7 @@ def place_order(request):
             product_template_str += '<tr><td>' + prod.title + '</td>'
             product_template_str += '<td>' + prod.flavour + '</td>'
             product_template_str += '<td>' + str(prod.value) + '</td>'
-            product_template_str += '<td><div class="input-group"><input type="button" value="-" class="button-minus" data-field="quantity"><input type="number" onkeyUp="updateCart(this)" onchange="updateCart(this)" data-id="' + str(prod.id) + '" step="1" max="" value="0" name="quantity" class="quantity-field"><input type="button" value="+" class="button-plus" data-field="quantity"></div></td>'
+            product_template_str += '<td><div class="input-group"><input onclick="decrement()" type="button" value="-" class="button-minus" data-field="quantity"><input type="number" onkeyUp="updateCart(this)" onchange="updateCart(this)" data-id="' + str(prod.id) + '" step="1" max="" value="0" name="quantity" class="quantity-field demoInput"><input onclick="increment()" type="button" value="+" class="button-plus" data-field="quantity"></div></td>'
             product_template_str += '</tr>'
 
     # product = Product.objects.all()

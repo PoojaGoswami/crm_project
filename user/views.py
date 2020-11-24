@@ -20,7 +20,7 @@ from django.utils.encoding import force_text
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
-from .models import Profile
+from .models import Profile, Athlete
 from django.contrib import messages
 
 
@@ -54,23 +54,32 @@ def activation_sent_view(request):
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+
         if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()  # load the profile instance created by the signal
-            user.profile.athlete_code = form.cleaned_data.get('athlete_code')
-            print('athlete_code', user.profile.athlete_code)
-            user.profile.birth_date = form.cleaned_data.get('birth_date')
-            user.profile.email = form.cleaned_data.get('email')
-            user.profile.mobile = form.cleaned_data.get('mobile')
-            user.profile.address = form.cleaned_data.get('address')
-            user.is_active = True
-            user.save()
-            # username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            # password = user.set_password(user.password)
-            user = authenticate(username=user.username, password=password)
-            login(request, user)
-            return redirect('home')
+            # verify if athlete ios valid
+            athlete_code_form = form.cleaned_data.get('athlete_code')
+            athlete_email = form.cleaned_data.get('email')
+            athlete_code = Athlete.objects.filter(email=athlete_email, athlete_code=athlete_code_form)
+            if athlete_code:
+                print('athlete_code--', athlete_code)
+                user = form.save()
+                user.refresh_from_db()  # load the profile instance created by the signal
+                user.profile.athlete_code = athlete_code_form
+                print('athlete_code', user.profile.athlete_code)
+                user.profile.birth_date = form.cleaned_data.get('birth_date')
+                user.profile.email = athlete_email
+                user.profile.mobile = form.cleaned_data.get('mobile')
+                user.profile.address = form.cleaned_data.get('address')
+                user.is_active = True
+                user.save()
+                # username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password1')
+                # password = user.set_password(user.password)
+                user = authenticate(username=user.username, password=password)
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.error(request, "Athlete code or email not found.")
 
             # current_site = get_current_site(request)
             # subject = 'Please Activate Your Account'
@@ -82,9 +91,8 @@ def signup(request):
             # })
             # user.email_user(subject, message)
             # return redirect('activation_sent')
-        else:
-            form = SignUpForm()
-
+        # else:
+        #     form = SignUpForm()
     else:
         form = SignUpForm()
 
@@ -97,7 +105,7 @@ def login_user(request):
         print("hello")
         # form = AuthenticationForm(request=request, data=request.POST)
         form = LoginForm(data=request.POST)
-        print('foem', form, form.is_valid())
+        print('foem', form.is_valid())
         print(form.errors)
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -116,10 +124,10 @@ def login_user(request):
                         messages.info(request, f"You are now logged in as {username}")
                         return redirect('/')
                     else:
-                        messages.error(request, "Invalid username or password.")
-                        print("Invalid details.")
+                        messages.error(request, "Athlete code not found.")
+                        print("Invalid athlete code details.")
             else:
-                messages.error(request, "Invalid user details")
+                messages.error(request, "Invalid username or password")
                 print("Invalid user details.")
     else:
         form = LoginForm()

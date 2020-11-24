@@ -234,6 +234,12 @@ $('.input-group').on('click', '.button-plus', function(e) {
 $('.input-group').on('click', '.button-minus', function(e) {
   decrementValue(e);
 });
+function increment() {
+      document.getElementsByClassName('demoInput').stepUp();
+   }
+   function decrement() {
+      document.getElementsByClassName('demoInput').stepDown();
+   }
     </script>
 
 <script src="{%  static 'js/jquery-2.1.4.min.js' %}"></script>
