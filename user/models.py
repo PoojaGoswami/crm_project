@@ -16,7 +16,7 @@ class Athlete(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    athlete_code = models.CharField(max_length=128, unique=True)
+    athlete_code = models.CharField(max_length=128)
     birth_date = models.DateField(max_length=50, null=True, blank=True)
     address = models.TextField()
     mobile = models.CharField(max_length=50)

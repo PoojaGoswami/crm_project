@@ -101,7 +101,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dashboard',
-        'USER': 'root',
+        'USER': 'pooja',
         'PASSWORD': 'Pooja@123',
     }
 }
@@ -149,6 +149,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'CMR/static'),
     BASE_DIR / "static",
     '/var/www/static/',
 ]

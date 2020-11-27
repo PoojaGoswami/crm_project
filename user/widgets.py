@@ -1,4 +1,4 @@
-from django.forms import DateInput
+from django.forms import DateTimeInput, DateInput
 
 
 class FengyuanChenDatePickerInput(DateInput):

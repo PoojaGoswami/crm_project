@@ -65,7 +65,7 @@ def signup(request):
                 user = form.save()
                 user.refresh_from_db()  # load the profile instance created by the signal
                 user.profile.athlete_code = athlete_code_form
-                print('athlete_code', user.profile.athlete_code)
+                print('athlete_code', user.profile.athlete_code, 'birth date--', form.cleaned_data.get('birth_date'))
                 user.profile.birth_date = form.cleaned_data.get('birth_date')
                 user.profile.email = athlete_email
                 user.profile.mobile = form.cleaned_data.get('mobile')

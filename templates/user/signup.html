@@ -23,13 +23,11 @@
     <!-- Style CSS -->
     <link href="{% static "user/css/style.css" %}" rel="stylesheet">
 
-    <script type="text/javascript">
-    $(function () {
-        $("#id_birth_date").datepicker({
-          format:'dd/mm/yyyy',
-        });
-    });
-    </script>
+    <!-- jquery -->
+  <script src="{% static "user/js/jquery-2.1.4.min.js" %}"></script>
+  <!-- DatePicker -->
+  <link rel="stylesheet" href="{% static 'vendor/datepicker-1.0.3/datepicker.min.css' %}">
+  <script src="{% static 'vendor/datepicker-1.0.3/datepicker.min.js' %}"></script>
 
 </head>
 
@@ -124,8 +122,6 @@
 </div>
 <!-- #main-wrapper -->
 
-<!-- jquery -->
-<script src="{% static "user/js/jquery-2.1.4.min.js" %}"></script>
 
 <!-- Bootstrap -->
 <script src="{% static "user/js/bootstrap.min.js" %}"></script>
