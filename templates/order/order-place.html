@@ -162,7 +162,6 @@ input[type="number"] {
                                     <table class="table user-table no-wrap" id="prodTable">
                                         <thead>
                                             <tr>
-                                               
                                                 <th class="border-top-0">Product Name</th>
                                                 <th class="border-top-0">Flavours</th>
                                                 <th class="border-top-0">MRP</th>
@@ -200,18 +199,26 @@ input[type="number"] {
                         
                     </div>
     </div>
-	<script>
+
+<script src="{%  static 'js/jquery-2.1.4.min.js' %}"></script>
+<!-- Bootstrap -->
+<script src="{%  static 'js/bootstrap.min.js' %}"></script>
+<script src="{%  static 'js/scripts.js' %}"></script>
+<script type="text/javascript">
 function incrementValue(e) {
   e.preventDefault();
   var fieldName = $(e.target).data('field');
   var parent = $(e.target).closest('div');
   var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
+  var prod_id = parent.find('input[name=' + fieldName + ']').attr('data-id');
+  console.log('currentVal',currentVal);
+  get_product_quantity(parent, 'auto', prod_id, currentVal+1, fieldName);
 
-  if (!isNaN(currentVal)) {
+  /* if (!isNaN(currentVal)) {
     parent.find('input[name=' + fieldName + ']').val(currentVal + 1);
   } else {
     parent.find('input[name=' + fieldName + ']').val(0);
-  }
+  } */
 }
 
 function decrementValue(e) {
@@ -219,9 +226,10 @@ function decrementValue(e) {
   var fieldName = $(e.target).data('field');
   var parent = $(e.target).closest('div');
   var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
-
+  var prod_id = parent.find('input[name=' + fieldName + ']').attr('data-id');
   if (!isNaN(currentVal) && currentVal > 0) {
     parent.find('input[name=' + fieldName + ']').val(currentVal - 1);
+    updateCart(parent, 'auto', prod_id, currentVal - 1);
   } else {
     parent.find('input[name=' + fieldName + ']').val(0);
   }
@@ -234,21 +242,11 @@ $('.input-group').on('click', '.button-plus', function(e) {
 $('.input-group').on('click', '.button-minus', function(e) {
   decrementValue(e);
 });
-function increment() {
-      document.getElementsByClassName('demoInput').stepUp();
-   }
-   function decrement() {
-      document.getElementsByClassName('demoInput').stepDown();
-   }
-    </script>
+</script>
 
-<script src="{%  static 'js/jquery-2.1.4.min.js' %}"></script>
-<!-- Bootstrap -->
-<script src="{%  static 'js/bootstrap.min.js' %}"></script>
-<script src="{%  static 'js/scripts.js' %}"></script>
 {% block javascript %}
 <script type="text/javascript">
-    function SearchFunction(){
+  function SearchFunction(){
         // Declare variables
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("prodInput");
@@ -270,20 +268,61 @@ function increment() {
   }
     }
 
- products = {}
- function get_product_quantity(prod_id=1){
-    console.log(prod_id);
+
+ function get_product_quantity(object, ref = 'auto', prod_id=0, currentVal=0, fieldName=''){
+     console.log('get_product_quantity_prod_id', prod_id);
+     if(ref == 'manual'){
+        prod_id = object.getAttribute('data-id');
+        currentVal = object.value;
+     }
+
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    $.ajax({
+        headers: {'X-CSRFToken': csrftoken},
+        url: "ajax/product-count/",
+        type: "POST",
+        data: {prod_id:prod_id},
+        async: false,
+        success: function (res) {
+            var prod_qty = res.quantity;
+            console.log('prod_qty--', prod_qty, 'currentVal--', currentVal, 'entered_val-', ref);
+            if(prod_qty > currentVal){
+                if (!isNaN(currentVal)) {
+                    if(ref == 'auto'){
+                        object.find('input[name=' + fieldName + ']').val(currentVal);
+                    }
+
+                    updateCart(object, 'auto', prod_id, currentVal);
+                } else {
+                    object.find('input[name=' + fieldName + ']').val(0);
+                }
+            }
+            else{
+                alert("No more quantity for this product is available");
+            }
+
+        },
+        error: function (res) {
+            console.log(res);
+            alert(res);
+        }
+    });
+
  }
 
- products_json = {}
- function updateCart(object){
+ function updateCart(object, ref='manual', prod_id=0, currentVal=0){
+        console.log('object', object);
 
-        console.log("helloo");
-        var prod_id = object.getAttribute('data-id');
-        {#var prod_id = object.data-id#}
-
-        var qty = object.value;
-        console.log(qty, prod_id);
+        if(ref=='manual'){
+            prod_id = object.getAttribute('data-id');
+            var qty = object.value;
+        }
+        else {
+            /*var qty = $(object).find("input[name=quantity][data-id=" + prod_id + "]").val();*/
+            var qty = currentVal;
+        }
+        console.log('prod_id-', prod_id);
+        console.log('qty -',qty, typeof qty);
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},

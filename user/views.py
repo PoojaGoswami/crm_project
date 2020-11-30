@@ -61,11 +61,9 @@ def signup(request):
             athlete_email = form.cleaned_data.get('email')
             athlete_code = Athlete.objects.filter(email=athlete_email, athlete_code=athlete_code_form)
             if athlete_code:
-                print('athlete_code--', athlete_code)
                 user = form.save()
                 user.refresh_from_db()  # load the profile instance created by the signal
                 user.profile.athlete_code = athlete_code_form
-                print('athlete_code', user.profile.athlete_code, 'birth date--', form.cleaned_data.get('birth_date'))
                 user.profile.birth_date = form.cleaned_data.get('birth_date')
                 user.profile.email = athlete_email
                 user.profile.mobile = form.cleaned_data.get('mobile')
@@ -106,6 +104,7 @@ def login_user(request):
         # form = AuthenticationForm(request=request, data=request.POST)
         form = LoginForm(data=request.POST)
         print('foem', form.is_valid())
+        print(form.cleaned_data.get('username'), form.cleaned_data.get('password'))
         print(form.errors)
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -139,4 +138,5 @@ def login_user(request):
 
 def logout(request):
     # logout(request)
+    del request.session['cart']
     return redirect('login')

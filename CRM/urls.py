@@ -28,13 +28,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-# urlpatterns = [
-#     path('product/', include('product.urls')),
-#     path('order1/', include('order1.urls')),
-#     path('athlete/', include('athlete.urls')),
-#     path('admin/', admin.site.urls),
-# ]
-
 admin.site.site_header = "Steadfast Admin"
 admin.site.site_title = "Steadfast Admin Portal"
 admin.site.index_title = "Welcome to Steadfast Nutrition Portal"
@@ -61,6 +54,7 @@ urlpatterns = [
 
     # ajax_calls
     url(r'^ajax/update-cart/$', order_views.ajax_update_cart, name='update-cart'),
+    url(r'^ajax/product-count/$', product_views.ajax_product_count, name='product-count'),
 
 
     # path('', HomepageView.as_view(), name='homepage'),

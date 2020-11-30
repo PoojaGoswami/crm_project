@@ -10,6 +10,7 @@ import datetime
 from product.models import Product
 from user.models import User
 import uuid
+from django.utils import timezone
 
 from decimal import Decimal
 CURRENCY = settings.CURRENCY
@@ -24,9 +25,9 @@ class OrderManager(models.Manager):
 class Order(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(default=datetime.datetime.now())
+    date = models.DateTimeField(default=datetime.datetime.now())
     title = models.CharField(blank=True, max_length=150)
-    timestamp = models.DateField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
     value = models.DecimalField(default=0.00, decimal_places=2, max_digits=20)
     discount = models.DecimalField(default=0.00, decimal_places=2, max_digits=20)
     final_value = models.DecimalField(default=0.00, decimal_places=2, max_digits=20)

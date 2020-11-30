@@ -10,13 +10,10 @@ from django.http import JsonResponse
 from .cart import Cart
 import datetime
 
-
 @login_required
 def index(request):
     current_user = request.user.id
-    print('current', current_user)
     order_data = Order.objects.filter(user_id=current_user)
-    print('ordr data', order_data)
     return render(request, 'order/table-basic.html', {'order_data': order_data})
     # return HttpResponse("Hello, world. You're at the product index.")
 
@@ -36,9 +33,7 @@ def order_details(request):
 @login_required
 def previous_order(request):
     prev_order = Order.objects.all()
-    print('ordr data', prev_order)
     return render(request, 'order/previous-page.html', {'order_data':prev_order})
-    # return HttpResponse("Hello, world. You're at the product index.")
 
 
 @login_required
@@ -52,10 +47,9 @@ def place_order(request):
             product_template_str += '<tr><td>' + prod.title + '</td>'
             product_template_str += '<td>' + prod.flavour + '</td>'
             product_template_str += '<td>' + str(prod.value) + '</td>'
-            product_template_str += '<td><div class="input-group"><input onclick="decrement()" type="button" value="-" class="button-minus" data-field="quantity"><input type="number" onkeyUp="updateCart(this)" onchange="updateCart(this)" data-id="' + str(prod.id) + '" step="1" max="" value="0" name="quantity" class="quantity-field demoInput"><input onclick="increment()" type="button" value="+" class="button-plus" data-field="quantity"></div></td>'
+            product_template_str += '<td><div class="input-group"><input type="button" value="-" class="button-minus" data-field="quantity" data-id="' + str(prod.id) + '"><input type="number" onkeyUp="get_product_quantity(this, ' + "'manual'" + ')" onchange="get_product_quantity(this, ' + "'manual'" + ')" data-id="' + str(prod.id) + '" id="' + str(prod.id) + '" step="1" max="" value="0" name="quantity" class="quantity-field demoInput"><input type="button" value="+" class="button-plus" data-field="quantity" data-id="' + str(prod.id) + '"></div></td>'
             product_template_str += '</tr>'
 
-    # product = Product.objects.all()
     return render(request, 'order/order-place.html', {'product_template': product_template_str})
 
 
@@ -90,7 +84,7 @@ def ajax_add_product(request, pk, dk):
 def ajax_update_cart(request):
     prod_id = request.POST.get('prod_id')
     qty = request.POST.get('qty')
-    print('hii', prod_id, qty)
+    print('prod detail', prod_id, qty)
     cart = Cart(request)
     product = get_object_or_404(Product, id=prod_id)
     cart.add(product=product, quantity=qty, update_quantity=True)

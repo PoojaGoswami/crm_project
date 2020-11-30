@@ -43,7 +43,7 @@
 
                         <li class="nav-item hidden-sm-down">
                             <form class="app-search pl-3">
-                                <input type="text" class="form-control" placeholder="Search"> <a
+                                <input type="text" id="orderInput" onkeyup="SearchFunction()" class="form-control" placeholder="Search"> <a
                                     class="srh-btn"><i class="ti-search"></i></a>
                             </form>
                         </li>
@@ -103,12 +103,11 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table user-table no-wrap">
+                                    <table class="table user-table no-wrap" id="orderTable">
                                         <thead>
                                             <tr>
-                                                <th class="border-top-0">ORDER NO</th>
                                                 <th class="border-top-0">ORDER TITLE</th>
-                                                <!--<th class="border-top-0">Flavours</th>-->
+                                                <th class="border-top-0">ORDER ID</th>
                                                 <th class="border-top-0">MRP</th>
 												 <th class="border-top-0">Date</th>
                                             </tr>
@@ -116,12 +115,10 @@
                                         <tbody>
                                         {% for order in order_data %}
                                             <tr>
-                                                <td><a href="/order_details?order={{ order.uuid }}">{{ order.uuid }}</a> </td>
                                                 <td>{{ order.title }}</td>
-                                                <!--<td>Vanilla</td>-->
+                                                <td><a href="/order_details?order={{ order.uuid }}">{{ order.uuid }}</a> </td>
                                                 <td>RS. {{ order.final_value }}</td>
 												<td>{{ order.timestamp }}</td>
-
                                             </tr>
                                         {% endfor %}
                                             </tr>
@@ -133,7 +130,7 @@
                         </div>
 						<div class="text-right upgrade-btn">
                             <a href="{% url 'home' %}"
-                                class="btn btn-success d-none d-md-inline-block text-white" target="_blank">PREVIOUS PAGE</a>
+                                class="btn btn-success d-none d-md-inline-block text-white">PREVIOUS PAGE</a>
                         </div>
                     </div>
                 </div>
@@ -143,6 +140,31 @@
                         
                     </div>
     </div>
+{% block javascript %}
+    <script type="text/javascript">
+    function SearchFunction(){
+        // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("orderInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("orderTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+    }
+    </script>
+{% endblock %}
 </body>
 
 </html>

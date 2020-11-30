@@ -43,7 +43,7 @@
 
                         <li class="nav-item hidden-sm-down">
                             <form class="app-search pl-3">
-                                <input type="text" class="form-control" placeholder="Search"> <a
+                                <input type="text" id="orderInput" onkeyup="SearchFunction()" class="form-control" placeholder="Search"> <a
                                     class="srh-btn"><i class="ti-search"></i></a>
                             </form>
                         </li>
@@ -103,13 +103,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table user-table no-wrap">
+                                    <table class="table user-table no-wrap" id="orderTable">
                                         <thead>
                                             <tr>
                                                 <th class="border-top-0">Order No.</th>
                                                 <th class="border-top-0">Product Name</th>
                                                 <th class="border-top-0">Flavours</th>
-                                                <th class="border-top-0">MRP</th>
+                                                <th class="border-top-0">QUANTITY</th>
                                                 <th class="border-top-0">TOTAL MRP</th>
                                             </tr>
                                         </thead>
@@ -120,7 +120,7 @@
                                                 <td>{{ order.order_id }} </td>
                                                 <td>{{ order.product.title }}</td>
                                                 <td>{{ order.product.flavour }}</td>
-                                                <td>RS. {{ order.final_price }}</td>
+                                                <td>{{ order.qty }}</td>
                                                 <td>RS. {{ order.total_price }}</td>
 {#												<td>{{ order.timestamp }}</td>#}
 
@@ -135,7 +135,7 @@
                         </div>
 						<div class="text-right upgrade-btn">
                             <a href="{% url 'order'  %}"
-                                class="btn btn-success d-none d-md-inline-block text-white" target="_blank">PREVIOUS PAGE</a>
+                                class="btn btn-success d-none d-md-inline-block text-white">PREVIOUS PAGE</a>
                         </div>
                     </div>
                 </div>
@@ -145,7 +145,31 @@
                         
                     </div>
     </div>
+{% block javascript %}
+    <script type="text/javascript">
+    function SearchFunction(){
+        // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("orderInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("orderTable");
+  tr = table.getElementsByTagName("tr");
 
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+    }
+    </script>
+{% endblock %}
 </body>
 
 </html>
