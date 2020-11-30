@@ -116,7 +116,7 @@ def login_user(request):
             print('user', user)
             if user is not None:
                 if user.is_active:
-                    athlete_code = Profile.objects.filter(athlete_code=athlete_code)
+                    athlete_code = Profile.objects.filter(athlete_code=athlete_code, user_id=user.id)
                     print('athlete_code', athlete_code)
                     if athlete_code:
                         login(request, user)
