@@ -17,7 +17,7 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ['product', 'order', 'qty', 'price', 'discount_price', 'final_price', 'total_price']
-    list_select_related = ['product', 'order']
+    list_select_related = ['product']
     list_filter = ['product', 'order', 'qty', 'price', 'discount_price', 'final_price', 'total_price']
     search_fields = ['title']
     list_per_page = 50

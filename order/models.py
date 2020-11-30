@@ -16,6 +16,25 @@ from decimal import Decimal
 CURRENCY = settings.CURRENCY
 
 
+def from_0001():
+    '''
+    Returns the next default value for the `ones` field,
+    starts from 500
+    '''
+    # Retrieve a list of `YourModel` instances, sort them by
+    # the `ones` field and get the largest entry
+    # largest = Order.objects.all().order_by('ones').last()
+    largest = Order.objects.all().order_by('id').last()
+    if not largest:
+        # largest is `None` if `YourModel` has no instances
+        # in which case we return the start value of 500
+        return 'SN' + '0001'
+    # If an instance of `YourModel` is returned, we get it's
+    # `ones` attribute and increment it by 1
+    largest = largest.id + 1
+    return 'SN' + "{0:0=4d}".format(largest)
+
+
 class OrderManager(models.Manager):
 
     def active(self):
@@ -23,7 +42,8 @@ class OrderManager(models.Manager):
 
 
 class Order(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
+    # uuid = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
+    order_no = models.CharField(default=from_0001, unique=True, max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(default=datetime.datetime.now())
     title = models.CharField(blank=True, max_length=150)
@@ -80,7 +100,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    order = models.ForeignKey(Order, to_field='uuid', on_delete=models.CASCADE, related_name='order_items')
+    order = models.ForeignKey(Order, to_field='order_no', on_delete=models.CASCADE, related_name='order_items')
     qty = models.PositiveIntegerField(default=1)
     price = models.DecimalField(default=0.00, decimal_places=2, max_digits=20)
     discount_price = models.DecimalField(default=0.00, decimal_places=2, max_digits=20)

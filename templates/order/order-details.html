@@ -56,7 +56,7 @@
 					
 						<a  href=""><b class="user_name">{{ user.username }}</b></a>
 					
-						<a  href="logout/"><b class="user_logout">Logout</b></a>
+						<a  href="{% url 'logout' %}"><b class="user_logout">Logout</b></a>
 			
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href=""><img src="{%  static 'img/user.png' %}"
                                     alt="user" class="profile-pic mr-2"></a>
@@ -106,7 +106,7 @@
                                     <table class="table user-table no-wrap" id="orderTable">
                                         <thead>
                                             <tr>
-                                                <th class="border-top-0">Order No.</th>
+                                                <th class="border-top-0">Order No</th>
                                                 <th class="border-top-0">Product Name</th>
                                                 <th class="border-top-0">Flavours</th>
                                                 <th class="border-top-0">QUANTITY</th>

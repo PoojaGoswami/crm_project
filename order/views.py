@@ -13,7 +13,11 @@ import datetime
 @login_required
 def index(request):
     current_user = request.user.id
-    order_data = Order.objects.filter(user_id=current_user)
+    if request.user.is_superuser:
+        order_data = Order.objects.all()
+    else:
+        order_data = Order.objects.filter(user_id=current_user)
+    print(order_data.query)
     return render(request, 'order/table-basic.html', {'order_data': order_data})
     # return HttpResponse("Hello, world. You're at the product index.")
 
@@ -21,10 +25,8 @@ def index(request):
 # @api_view(["GET"])
 @login_required
 def order_details(request):
-    current_user = request.user
-    print('current', current_user)
-    order_uuid = request.GET.get('order')
-    order_items = OrderItem.objects.filter(order_id=order_uuid).select_related('product')
+    order_no = request.GET.get('order')
+    order_items = OrderItem.objects.filter(order_id=order_no).select_related('product')
     print(order_items.query)
 
     return render(request, 'order/order-details.html', {'order_data': order_items})
@@ -32,7 +34,8 @@ def order_details(request):
 
 @login_required
 def previous_order(request):
-    prev_order = Order.objects.all()
+    current_user = request.user.id
+    prev_order = Order.objects.filter(user_id=current_user)
     return render(request, 'order/previous-page.html', {'order_data':prev_order})
 
 
@@ -116,7 +119,7 @@ def place_final_order(request):
 
     for key in cart_session:
         product = get_object_or_404(Product, id=key)
-        order_item, created = OrderItem.objects.get_or_create(order_id=new_order.uuid, product_id=key)
+        order_item, created = OrderItem.objects.get_or_create(order_id=new_order.order_no, product_id=key)
         if created:
             order_item.qty = cart_session[key]['quantity']
             order_item.price = cart_session[key]['price']

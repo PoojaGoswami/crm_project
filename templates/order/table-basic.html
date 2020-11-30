@@ -56,7 +56,7 @@
 					
 						<a  href="#"><b class="user_name">{{ user.username }}</b></a>
 					
-						<a  href="logout/"><b class="user_logout">Logout</b></a>
+						<a  href="{% url 'logout' %}"><b class="user_logout">Logout</b></a>
 			
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href=""><img src="{%  static 'img/user.png' %}"
                                     alt="user" class="profile-pic mr-2"></a>
@@ -106,19 +106,25 @@
                                     <table class="table user-table no-wrap" id="orderTable">
                                         <thead>
                                             <tr>
-                                                <th class="border-top-0">ORDER TITLE</th>
-                                                <th class="border-top-0">ORDER ID</th>
+                                                <th class="border-top-0">ORDER No</th>
+                                                <!--<th class="border-top-0">ORDER TITLE</th>-->
+                                                {% if user.is_superuser %}
+                                                    <th class="border-top-0">user email</th>
+                                                {% endif %}
                                                 <th class="border-top-0">MRP</th>
-												 <th class="border-top-0">Date</th>
+												 <th class="border-top-0">DATE</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         {% for order in order_data %}
                                             <tr>
-                                                <td>{{ order.title }}</td>
-                                                <td><a href="/order_details?order={{ order.uuid }}">{{ order.uuid }}</a> </td>
+                                                <td><a href="/order_details?order={{ order.order_no }}">#{{ order.order_no }}</a> </td>
+                                                {% if user.is_superuser %}
+                                                    <td>{{ order.user.email  }}</td>
+                                                {% endif %}
+{#                                                <!--<td>{{ order.title }}</td>#}
                                                 <td>RS. {{ order.final_value }}</td>
-												<td>{{ order.timestamp }}</td>
+												<td>{{ order.date }}</td>
                                             </tr>
                                         {% endfor %}
                                             </tr>
