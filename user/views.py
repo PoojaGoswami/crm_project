@@ -70,12 +70,12 @@ def signup(request):
                 user.profile.address = form.cleaned_data.get('address')
                 user.is_active = True
                 user.save()
-                # username = form.cleaned_data.get('username')
                 password = form.cleaned_data.get('password1')
-                # password = user.set_password(user.password)
                 user = authenticate(username=user.username, password=password)
-                login(request, user)
-                return redirect('home')
+                # login(request, user)
+                # return redirect('home')
+                login_form = LoginForm()
+                return render(request=request, template_name="user/login.html", context={"form": login_form})
             else:
                 messages.error(request, "Athlete code or email not found.")
 
