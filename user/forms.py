@@ -15,6 +15,8 @@ class SignUpForm(UserCreationForm):
 
     # username = templates.CharField(max_length=50, required=False, help_text='Optional.', widget= templates.TextInput(attrs={'placeholder':'Name'}))
     # birth_date = forms.CharField(max_length=25, required=False, help_text='', widget=forms.TextInput(attrs={'placeholder':'Date of birth'}))
+    first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
+    last_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
     birth_date = forms.DateTimeField(input_formats=['%d/%m/%Y'], widget=FengyuanChenDatePickerInput(attrs={'placeholder':'Date of birth', 'class': 'datepicker', 'autocomplete': 'off'}))
     athlete_code = forms.CharField(max_length=50, required=False, help_text='', widget=forms.TextInput(attrs={'placeholder':'Athlete Code'}))
     address = forms.CharField(max_length=150, required=False, help_text='', widget=forms.TextInput(attrs={'placeholder':'Address'}))
@@ -25,7 +27,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'birth_date', 'athlete_code', 'address', 'mobile', 'email', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'birth_date', 'athlete_code', 'address', 'mobile', 'email', 'password1', 'password2')
 
 
 class LoginForm(AuthenticationForm):

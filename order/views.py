@@ -14,7 +14,7 @@ import datetime
 def index(request):
     current_user = request.user.id
     if request.user.is_superuser:
-        order_data = Order.objects.all()
+        order_data = Order.objects.all().select_related('user__profile')
     else:
         order_data = Order.objects.filter(user_id=current_user)
     print(order_data.query)

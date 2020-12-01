@@ -109,7 +109,8 @@
                                                 <th class="border-top-0">ORDER No</th>
                                                 <!--<th class="border-top-0">ORDER TITLE</th>-->
                                                 {% if user.is_superuser %}
-                                                    <th class="border-top-0">user email</th>
+                                                    <th class="border-top-0">USERNAME</th>
+                                                    <th class="border-top-0">ATHLETE CODE</th>
                                                 {% endif %}
                                                 <th class="border-top-0">MRP</th>
 												 <th class="border-top-0">DATE</th>
@@ -120,7 +121,8 @@
                                             <tr>
                                                 <td><a href="/order_details?order={{ order.order_no }}">#{{ order.order_no }}</a> </td>
                                                 {% if user.is_superuser %}
-                                                    <td>{{ order.user.email  }}</td>
+                                                    <td>{{ order.user.first_name  }} {{ order.user.last_name  }}</td>
+                                                    <td>{{ order.user.profile.athlete_code  }}</td>
                                                 {% endif %}
 {#                                                <!--<td>{{ order.title }}</td>#}
                                                 <td>RS. {{ order.final_value }}</td>
