@@ -13,7 +13,7 @@ Author: themehippo.com
 # Theme Color (link color) #82b541
 # Mid grey (sub header) #f4f4f4
 # Background Color #ffffff
-# -------------------------------------------------------------------*/
+# ------------------------------------------------------------------*/
 
 body {
     font-family : 'Hind', sans-serif;
@@ -22,6 +22,7 @@ body {
     color       : #3d3d50;
     font-weight : 300;
     background  : #ffffff;
+    font-size: 1rem;
     }
 
 /* --------------------------------------
@@ -231,6 +232,12 @@ button:focus,
     .section-wrapper {
         padding : 30px 20px;
         }
+    }
+@media (max-width : 700px) {
+   .user-table tbody tr td {
+    font-weight: 100 !important;
+    font-size: 12px !important;
+}
     }
 
 /*---------------------------
