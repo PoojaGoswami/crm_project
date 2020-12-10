@@ -45,7 +45,7 @@ urlpatterns = [
     url(r'^order_details/$', order_views.order_details, name="order_details"),
     url(r'^$', order_views.place_order, name="home"),
     url(r'^place_final_order/$', order_views.place_final_order, name="place_final_order"),
-    # url(r'^login/$', LoginView.as_view(template_name='user/login.html'), name='login'),
+    url(r'^order_confirm/$', order_views.order_confirm, name="order_confirm"),
     url(r'^login/$', core_views.login_user, name="login"),
     url(r'^logout/$', core_views.logout, name='logout'),
     url(r'^signup/$', core_views.signup, name='signup'),

@@ -57,6 +57,26 @@ def place_order(request):
 
 
 @login_required
+def order_confirm(request):
+    cart_session = request.session.get('cart')
+    print('cart session--', cart_session)
+    cart = Cart(request)
+    print('len', cart.__len__())
+
+    cart_template_str = ''
+    for key, value in cart_session.items():
+        prod_title = Product.objects.values_list('title', 'flavour').get(pk=key)
+        print('prod_title', prod_title)
+        cart_template_str += '<tr><td>' + prod_title[0] + '</td>'
+        cart_template_str += '<td>' + prod_title[1] + '</td>'
+        cart_template_str += '<td>' + value['final_price'] + '</td>'
+        cart_template_str += '<td><div class="input-group"><input type="button" value="-" class="button-minus" data-field="quantity" data-id="' + key + '"><input type="number" onkeyUp="get_product_quantity(this, ' + "'manual'" + ')" onchange="get_product_quantity(this, ' + "'manual'" + ')" data-id="' + key + '" id="' + key + '" step="1" max="" value="' + value['quantity'] + '" name="quantity" class="quantity-field demoInput"><input type="button" value="+" class="button-plus" data-field="quantity" data-id="' + key + '"></div></td>'
+        cart_template_str += '</tr>'
+
+    return render(request, 'order/order-confirm.html', {'cart_template': cart_template_str})
+
+
+@login_required
 def ajax_add_product(request, pk, dk):
     instance = get_object_or_404(Order, id=pk)
     product = get_object_or_404(Product, id=dk)
