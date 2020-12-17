@@ -236,7 +236,7 @@ button:focus,
 @media (max-width : 700px) {
    .user-table tbody tr td {
     font-weight: 100 !important;
-    font-size: 12px !important;
+    font-size: 1.0em !important;
 }
     }
 
