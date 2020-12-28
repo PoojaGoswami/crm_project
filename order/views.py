@@ -10,6 +10,19 @@ from django.http import JsonResponse
 from .cart import Cart
 import datetime
 
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
+import logging
+
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
+
 @login_required
 def index(request):
     current_user = request.user.id
@@ -17,7 +30,7 @@ def index(request):
         order_data = Order.objects.all().select_related('user__profile')
     else:
         order_data = Order.objects.filter(user_id=current_user)
-    print(order_data.query)
+    # print(order_data.query)
     return render(request, 'order/table-basic.html', {'order_data': order_data})
     # return HttpResponse("Hello, world. You're at the product index.")
 
@@ -27,7 +40,7 @@ def index(request):
 def order_details(request):
     order_no = request.GET.get('order')
     order_items = OrderItem.objects.filter(order_id=order_no).select_related('product')
-    print(order_items.query)
+    # print(order_items.query)
 
     return render(request, 'order/order-details.html', {'order_data': order_items})
 
@@ -59,14 +72,12 @@ def place_order(request):
 @login_required
 def order_confirm(request):
     cart_session = request.session.get('cart')
-    print('cart session--', cart_session)
     cart = Cart(request)
     print('len', cart.__len__())
 
     cart_template_str = ''
     for key, value in cart_session.items():
         prod_title = Product.objects.values_list('title', 'flavour').get(pk=key)
-        print('prod_title', prod_title)
         cart_template_str += '<tr><td>' + prod_title[0] + '</td>'
         cart_template_str += '<td>' + prod_title[1] + '</td>'
         cart_template_str += '<td>' + value['final_price'] + '</td>'
@@ -107,7 +118,7 @@ def ajax_add_product(request, pk, dk):
 def ajax_update_cart(request):
     prod_id = request.POST.get('prod_id')
     qty = request.POST.get('qty')
-    print('prod detail', prod_id, qty)
+    # print('prod detail', prod_id, qty)
     cart = Cart(request)
     product = get_object_or_404(Product, id=prod_id)
     cart.add(product=product, quantity=qty, update_quantity=True)
@@ -120,7 +131,6 @@ def ajax_update_cart(request):
 @login_required
 def place_final_order(request):
     cart_session = request.session.get('cart')
-    print('cart session--', cart_session)
     cart = Cart(request)
     ordered_items = cart.__iter__()
     print('len', cart.__len__())
@@ -151,9 +161,40 @@ def place_final_order(request):
         product.save()
         new_order.refresh_from_db()
 
+    send_conformation_mail(request, new_order.order_no)
+
     del request.session['cart']
 
     return render(request, 'order/thankyou.html', {ordered_items: ordered_items})
+
+
+def send_conformation_mail(request, order_no):
+    cart_session = request.session.get('cart')
+
+    email_subject = 'Order received'
+    from_email = settings.EMAIL_HOST_USER
+    to_email_list = [request.user.email, 'dm@steadfastnutrition.in', 'poojacs11@gmail.com']
+
+    product_details = []
+    for key, value in cart_session.items():
+        prod_title = Product.objects.values_list('title', 'flavour').get(pk=key)
+        prod_row = {'name': prod_title[0], 'flavour': prod_title[1], 'mrp': value['final_price'], 'quantity': value[
+            'quantity']}
+        product_details.append(prod_row)
+
+    email_params = {'username': request.user.email,
+                    'order_no': order_no,
+                    'product_details': product_details}
+
+    msg_plain = render_to_string('order/email_template.txt', email_params)
+    msg_html = render_to_string('order/email_template.html', email_params)
+
+    msg = EmailMultiAlternatives(email_subject, msg_plain, from_email, to_email_list)
+    msg.attach_alternative(msg_html, "text/html")
+    try:
+        msg.send()
+    except:
+        logger.error("Unable to send mail.")
 
 
 def cart_remove(request, product_id):

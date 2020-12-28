@@ -17,14 +17,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-CURRENCY = 'INR'
-CART_SESSION_ID = 'cart'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-LOGIN_URL = '/login'
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -147,6 +139,21 @@ USE_TZ = True
 # STATIC_ROOT = 'static/'
 
 STATIC_URL = '/static/'
+CURRENCY = 'INR'
+CART_SESSION_ID = 'cart'
+LOGIN_URL = '/login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'xxxxxxx'  # valid gmail id
+EMAIL_HOST_PASSWORD = 'xxxxxxx'  # valid password
+
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'CMR/static'),

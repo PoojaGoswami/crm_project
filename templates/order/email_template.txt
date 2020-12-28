@@ -1,0 +1,7 @@
+Dear User,
+Thank you, You order with order number #{{ order_no }} has been received Successfully.
+
+
+--
+Best Regards,
+Steadfast Team
