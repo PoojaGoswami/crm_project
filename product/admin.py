@@ -19,3 +19,22 @@ class ProductAdmin(admin.ModelAdmin):
     fields = ['active', 'title', 'category', 'flavour', 'qty', 'value', 'discount_value', 'tag_final_value']
     autocomplete_fields = ['category']
     readonly_fields = ['tag_final_value']
+    actions = ['download_csv']
+
+    def download_csv(self, request, queryset):
+        import csv
+        from django.http import HttpResponse
+        from io import StringIO
+
+        # f = StringIO.StringIO()
+        f = StringIO()
+        writer = csv.writer(f)
+        writer.writerow(['title', 'category', 'flavour', 'value', 'qty', 'active'])
+
+        for s in queryset:
+            writer.writerow([s.title, s.category, s.flavour, s.value, s.qty, s.active])
+
+        f.seek(0)
+        response = HttpResponse(f, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=stat-info.csv'
+        return response
