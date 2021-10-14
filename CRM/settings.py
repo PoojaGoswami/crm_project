@@ -92,9 +92,9 @@ WSGI_APPLICATION = 'CRM.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dashboard',
-        'USER': 'pooja',
-        'PASSWORD': 'Pooja@123',
+        'NAME': 'dXXXXXd',
+        'USER': 'XXXXX',
+        'PASSWORD': 'XXXXX',
     }
 }
 
